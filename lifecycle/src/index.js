@@ -1,63 +1,119 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './index.css';
+
 function App(){
-	return(
-		<div>
-			<Schedule bus="citybus" train1="caltrain" train2="bart"/>
+	return (
+		<div className="app">
+			<h1>We would like you to welcome to the city of San Francisco!!!</h1>
+			<h2>Welcome to public transit Schedule app.</h2>
+			<Schedule bus="city bus" train1 = "bart" train2="cal-train"/>
+
+			<br />
+			<br />
+			<h1>Use following option to purchase ticket.</h1>
+			<Counter />
 		</div>
 	)
 }
 
+
 class Schedule extends React.Component{
-	constructor(props){
-		super(props);
+	constructor(){
+		super();
 		this.state = {
-			nightBus : true
-		};
+			weekday: true
+		}
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick(){
-		this.setState((state) => {
-			if(state.nightBus === true){
-				return {nightBus: false}
-			} else {
-				return {nightBus : true}
-			}
+		this.setState ( state => {
+				if(state.weekday === true){
+					return {weekday :false}
+				} else {
+					return {weekday : true}
+				}
 		})
 	}
 
 	render(){
-		const weekDayBus = "5am to 11pm";
-		const weekDayTrain1 = "4:30am to 9:30pm";
-		const weekDayTrain2 = "5am to 11pm";
+		const weekdayBus = "10am to 10pm";
+		const weekdayTrain1 = "9am to 9pm";
+		const weekdayTrain2 = "9am to 11pm";
 
-		const weekendBus = "5am to 11pm";
-		const weekendTrain1 = "9am to 6pm";
-		const weekendTrain2 = "9am to 9pm";
-		if(this.state.nightBus){
+		const weekendBus = "1pm to 9pm";
+		const weekendTrain1 = "11am to 7pm";
+		const weekendTrain2 = "10am to 11pm";
+
+		if(this.state.weekday){
 			return (
-				<div>
-					<button onClick = {this.handleClick}>weekend schedule for the city.</button>
-					<h1>***************You are viewing schedule for the weekday.*********************</h1>
-					<h1> {this.props.bus} - {weekDayBus}</h1>
-					<h1>{this.props.train1} {weekDayTrain1}</h1>
-					<h1>{this.props.train2} {weekDayTrain2}</h1>
+				<div className="schedule">
+					<h1>You are viewing schedule for the weekday.</h1>
+					<br />
+					<br />
+					<h3>{this.props.bus} {weekdayBus}</h3>
+					<h2>{this.props.train1} {weekdayTrain1}</h2>
+					<h2>{this.props.train2} {weekdayTrain2}</h2>
+					<button onClick={this.handleClick}>Click for weekend Schedule</button>
 				</div>
-			);
+			)
 		} else {
 			return (
-				<div>
-					<button onClick = {this.handleClick}>See schedule for the weekday.</button>
-					<h1>***************You are viewing the schedule of public transit for the weekend*************</h1>
-					<h1>{this.props.bus} {weekendBus}</h1>
-					<h1>{this.props.train1} {weekendTrain1}</h1>
-					<h1>{this.props.train2} {weekendTrain2}</h1>
+				<div className="schedule">
+					<h1>You are viewing schedule for the weekend.</h1>
+					<br />
+					<br />
+					<h3>{this.props.bus} {weekendBus}</h3>
+					<h3>{this.props.train1} {weekendTrain1}</h3>
+					<h3>{this.props.train2} {weekdayTrain2}</h3>
+					<button onClick={this.handleClick}>Please don't click me</button>
 				</div>
-			);
+				
+			)
 		}
+	
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+class Counter extends React.Component{
+	constructor(){
+		super();
+		this.state = {
+			count : 0
+		}
+		this.increment = this.increment.bind(this);
+		this.decrement = this.decrement.bind(this);
+		this.reset = this.reset.bind(this);
+	}
+
+	increment(){
+		this.setState(state => ({
+			count : state.count + 1
+		}))
+	}
+
+	decrement(){
+		this.setState(state => ({
+			count : state.count -1
+		}))
+	}
+
+	reset(){
+		this.setState(state => ({
+			count: 0
+		}))
+	}
+
+	render(){
+		return(
+			<div className="counter">
+				<button onClick={this.increment}>add to cart</button> <h1>{this.state.count}</h1>
+				<button onClick={this.decrement}>remove from cart</button>
+				<button onClick={this.reset}>reset</button>
+			</div>
+		)
+	}
+}
+ReactDOM.render(<App />,document.getElementById('root'));
